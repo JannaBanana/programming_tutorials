@@ -1,0 +1,56 @@
+x = input("input: ")
+y = list(x)
+length = len(x)
+
+def expression(index):
+    index, net_value = term(index)
+    while index < length:
+        if y[index] == '+':
+            index, value = term(index+1)
+            net_value = net_value + value
+            break
+        if y[index] == '-':
+            index, value = term(index+1)
+            net_value = net_value - value
+            break
+        else:
+            break
+    return index, net_value
+
+def term(index):
+    index, net_value = num(index)
+    while index < length:
+        if y[index] == '*':
+            index, value = num(index+1)
+            net_value = net_value * value
+            break
+        if y[index] == '/':
+            index, value = num(index+1)
+            net_value = net_value / value
+            break
+        else:
+            break
+    return index, net_value
+
+def num(index):
+    if y[index] == '(':
+        index, value = expression(index+1)
+    else:
+        index, value = sequence(index)
+    return index+1, value
+
+def sequence(index):
+    start = index
+    end = index
+    while index+1 < length:
+        numbers = y[index+1]
+        if numbers in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            index = index + 1
+            end += 1
+        else:
+            break
+    value = int(''.join(y)[start:end + 1])
+    return index, value
+
+print(expression(0))
+
